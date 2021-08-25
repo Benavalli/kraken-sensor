@@ -9,7 +9,7 @@ class TemperatureHumidity:
         self.humidity = humidity
         
     def to_json(self):
-        return json.dumps(self, default = lambda o:o.__dict__)
+        return json.dumps(self, default=lambda o: o.__dict__)
 
     def print_temperature_humidity(self):
         print("Temp: {:.1f} C / {:.1f} F    Humidity: {}% ".format(self.celsius, self.fahrenheit, self.humidity))
