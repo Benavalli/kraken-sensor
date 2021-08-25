@@ -25,7 +25,7 @@ install_requirements() {
 		echo 'Project does not contain the requirements file.'
 	else
 		echo '**Downloading project dependencies.'
-		python3 -m pip install --upgrade pip setuptools wheel
+		#python3 -m pip install --upgrade pip setuptools wheel
 		python3 -m pip install -r lib-requirements.txt
 	fi
 }
