@@ -33,7 +33,7 @@ class Dht11:
             return None
         except KeyboardInterrupt:
             print('interrupted!')
-            GPIO.cleanup()
+            #GPIO.cleanup()
             return None
 
     @staticmethod

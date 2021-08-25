@@ -14,23 +14,30 @@ def get_temperature_humidity():
 
 @app.route('/lamp-relay-state', methods=['POST'])
 def post_lamp_relay_state():
-    activated = request.values.get('activated')
-    return Relay().change_light_relay_state(activated)
+    device_state = request.values.get('state')
+    relay_devices = Relay().change_light_relay_state(device_state)
+    return jsonify({'relay-devices': relay_devices})
+
 
 @app.route('/exhaust-relay-state', methods=['POST'])
 def post_exhaust_relay_state():
-    activated = request.values.get('activated')
-    return Relay().change_exhaust_relay_state(activated)
+    device_state = request.values.get('state')
+    relay_devices = Relay().change_exhaust_relay_state(device_state)
+    return jsonify({'relay-devices': relay_devices})
+
 
 @app.route('/humidifier-relay-state', methods=['POST'])
 def post_humidifier_relay_state():
-    activated = request.values.get('activated')
-    return Relay().change_humidifier_relay_state(activated)
+    device_state = request.values.get('state')
+    relay_devices = Relay().change_humidifier_relay_state(device_state)
+    return jsonify({'relay-devices': relay_devices})
+
 
 @app.route('/pump-relay-state', methods=['POST'])
 def post_pump_relay_state():
-    activated = request.values.get('activated')
-    return Relay().change_pump_relay_state(activated)
+    device_state = request.values.get('state')
+    relay_devices = Relay().change_pump_relay_state(device_state)
+    return jsonify({'relay-devices': relay_devices})
 
 
 if __name__ == '__main__':
