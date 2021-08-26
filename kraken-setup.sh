@@ -2,14 +2,14 @@
 
 exist_venv() {
 	if [ ! -d "env" ]; then
-		echo '**Creating virtual environment.'
+		echo '**Creating virtual environment...'
 		python3 -m venv env
 	else
 		echo '**Virtual environment already created.'
 	fi
 	echo '**Initializing virtual environment.'
 	#running activate
-	. ./env/bin/activate
+	. env/bin/activate
 	#phyton version with venv
 	show_python_version
 }

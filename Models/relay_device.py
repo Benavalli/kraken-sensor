@@ -1,18 +1,18 @@
 import json
 import RPi.GPIO as GPIO
-from enum import Enum
+import enum
 
 
-class RelayDeviceEnum(Enum):
+class RelayDeviceEnum(enum.Enum):
     LIGHT = 1
     EXHAUST = 2
     HUMIDIFIER = 3
     PUMP = 4
 
 
-class RelayStateEnum(Enum):
-    GPIO.LOW = 0
-    GPIO.HIGH = 1
+class RelayStateEnum(enum.Enum):
+    ENABLED = 0
+    DISABLED = 1
 
 
 class RelayDevice:

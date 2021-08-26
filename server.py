@@ -12,32 +12,36 @@ def get_temperature_humidity():
     return jsonify({'temperature-humidity': temperature_humidity})
 
 
-@app.route('/lamp-relay-state', methods=['POST'])
-def post_lamp_relay_state():
-    device_state = request.values.get('state')
-    relay_devices = Relay().change_light_relay_state(device_state)
-    return jsonify({'relay-devices': relay_devices})
+@app.route('/light-relay-state', methods=['POST'])
+def post_light_relay_state():
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_light_relay_state(device_state).to_json()
+    return jsonify({'relay-devices': relay_device})
 
 
 @app.route('/exhaust-relay-state', methods=['POST'])
 def post_exhaust_relay_state():
-    device_state = request.values.get('state')
-    relay_devices = Relay().change_exhaust_relay_state(device_state)
-    return jsonify({'relay-devices': relay_devices})
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_exhaust_relay_state(device_state).to_json()
+    return jsonify({'relay-devices': relay_device})
 
 
 @app.route('/humidifier-relay-state', methods=['POST'])
 def post_humidifier_relay_state():
-    device_state = request.values.get('state')
-    relay_devices = Relay().change_humidifier_relay_state(device_state)
-    return jsonify({'relay-devices': relay_devices})
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_humidifier_relay_state(device_state).to_json()
+    return jsonify({'relay-devices': relay_device})
 
 
 @app.route('/pump-relay-state', methods=['POST'])
 def post_pump_relay_state():
-    device_state = request.values.get('state')
-    relay_devices = Relay().change_pump_relay_state(device_state)
-    return jsonify({'relay-devices': relay_devices})
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_pump_relay_state(device_state).to_json()
+    return jsonify({'relay-device': relay_device})
 
 
 if __name__ == '__main__':
