@@ -5,5 +5,5 @@ Raspberry PI application to read temperature, humidity and measure LUX. The appl
 
    - Install Python 3
    - Run `sh kraken-setup.sh`
-   - Activate your newely Python env, because the dependencies were downloaded in there and to avoid conflicts within your system libraries `source env/bin/activate`
+   - Activate your newly Python env, because the dependencies were downloaded in there and also to avoid conflicts within your system libraries `source env/bin/activate`
    - Make sure to adjust `config.properties` to match the `GPIO` PIN numbers which the devices are connected into your Raspberry PI
