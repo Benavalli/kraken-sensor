@@ -1,5 +1,4 @@
 import json
-import RPi.GPIO as GPIO
 import enum
 
 

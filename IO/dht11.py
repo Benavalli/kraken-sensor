@@ -2,7 +2,7 @@ import time
 import board
 import Adafruit_DHT
 
-from Models.temperature_humidity import TemperatureHumidity
+from models.temperature_humidity import TemperatureHumidity
 
 
 class Dht11:
