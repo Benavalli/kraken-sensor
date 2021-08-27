@@ -1,4 +1,4 @@
-from IO.relay import Relay
+from ..IO.relay import Relay
 from models.relay_device import RelayStateEnum
 
 if __name__ == "__main__":
