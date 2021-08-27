@@ -61,10 +61,10 @@ class Relay(object):
         GPIO.setup(pin, GPIO.IN)
         return GPIO.input(pin)
 
-    def change_light_relay_state(self, relay_state: RelayStateEnum):
+    def change_light_relay_state(self, state):
         GPIO.setup(self.relay_light_device.pin, GPIO.OUT)
-        GPIO.output(self.relay_light_device.pin, relay_state.value)
-        self.relay_light_device.state = relay_state.name
+        GPIO.output(self.relay_light_device.pin, state)
+        self.relay_light_device.state = RelayStateEnum(state).name
         return self.relay_light_device
 
     def change_exhaust_relay_state(self, state):
