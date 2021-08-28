@@ -6,6 +6,7 @@ from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
 class Relay(object):
+
     instance = None
     config = configparser.RawConfigParser()
     property_path = "..\\config.properties"
@@ -85,6 +86,13 @@ class Relay(object):
         self.relay_pump_device.state = RelayStateEnum(state).name
         return self.relay_pump_device
 
+    def __change_relay_state(self, pin, state):
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(self.relay_pump_device.pin, state)
+
+
     def __get_device_list(self):
-        return [self.relay_light_device, self.relay_exhaust_device, self.relay_humidifier_device,
+        return [self.relay_light_device,
+                self.relay_exhaust_device,
+                self.relay_humidifier_device,
                 self.relay_pump_device]

@@ -1,3 +1,5 @@
+import os
+user_home = os.environ["KRAKEN_SENSOR_HOME"]
 from IO.relay import Relay
 from models.relay_device import RelayStateEnum
 

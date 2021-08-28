@@ -8,7 +8,7 @@ from models.temperature_humidity import TemperatureHumidity
 class Dht11:
 
     DHT_SENSOR = Adafruit_DHT.DHT11
-    DHT_PIN = 4
+    DHT_PIN = 5
     retries = 5
     sleepTime = 2.0
 
