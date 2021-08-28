@@ -1,14 +1,10 @@
-import time
-
 import RPi.GPIO as GPIO
 import configparser
-import os
 
 from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
 class Relay(object):
-
     instance = None
     config = configparser.RawConfigParser()
     property_path = "..\\config.properties"
@@ -17,15 +13,11 @@ class Relay(object):
         if cls.instance is None:
             cls.instance = super(Relay, cls).__new__(cls)
             # Setting GPIO pin numbers
-            GPIO.setmode(GPIO.BCM)
-            current_path = os.path.dirname(__file__)
-            cls.config.read("/home/pi/Kraken/kraken-sensor/config.properties")
+            if GPIO.getmode() != GPIO.BCM:
+                GPIO.setmode(GPIO.BCM)
+            cls.config.read("../config.properties")
             cls.__loading_connected_relays(cls.instance)
-            print('oiiiii')
         return cls.instance
-
-    #def __del__(self):
-        #GPIO.cleanup()
 
     def __loading_connected_relays(self):
         relay_light_pin = self.config.getint("PIN", "light.gpio.pin")
@@ -62,14 +54,32 @@ class Relay(object):
 
     @staticmethod
     def __setup_device(pin):
-        GPIO.setup(pin, GPIO.OUT)
-        oi = GPIO.input(pin)
-        print(oi)
-        return oi
+        try:
+            state = GPIO.input(pin)
+            return state
+        except:
+            try:
+                GPIO.setup(pin, GPIO.OUT)
+                state = GPIO.input(pin)
+                return state
+            except:
+                return None
 
     def read_light_relay_state(self):
         light_relay_state = GPIO.input(self.relay_light_device.pin)
         return light_relay_state
+
+    def read_exhaust_relay_state(self):
+        exhaust_relay_state = GPIO.input(self.relay_exhaust_device.pin)
+        return exhaust_relay_state
+
+    def read_humidifier_relay_state(self):
+        humidifier_relay_state = GPIO.input(self.relay_humidifier_device.pin)
+        return humidifier_relay_state
+
+    def read_pump_relay_state(self):
+        pump_relay_state = GPIO.input(self.relay_pump_device.pin)
+        return pump_relay_state
 
     def change_light_relay_state(self, state):
         GPIO.output(self.relay_light_device.pin, state)
@@ -94,7 +104,6 @@ class Relay(object):
     def __change_relay_state(self, pin, state):
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(self.relay_pump_device.pin, state)
-
 
     def __get_device_list(self):
         return [self.relay_light_device,
