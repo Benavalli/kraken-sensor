@@ -21,6 +21,7 @@ class Relay(object):
             current_path = os.path.dirname(__file__)
             cls.config.read("/home/pi/Kraken/kraken-sensor/config.properties")
             cls.__loading_connected_relays(cls.instance)
+            print('oiiiii')
         return cls.instance
 
     #def __del__(self):
