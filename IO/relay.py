@@ -63,7 +63,9 @@ class Relay(object):
     @staticmethod
     def __setup_device(pin):
         GPIO.setup(pin, GPIO.OUT)
-        return GPIO.input(pin)
+        oi = GPIO.input(pin)
+        print(oi)
+        return oi
 
     def read_light_relay_state(self):
         GPIO.input(self.relay_light_device.pin)
