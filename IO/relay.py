@@ -1,3 +1,5 @@
+import time
+
 import RPi.GPIO as GPIO
 import configparser
 import os
@@ -67,10 +69,13 @@ class Relay(object):
 
         print(GPIO.input(self.relay_light_device.pin))
         print(self.relay_light_device.pin)
+        time.sleep(1)
         GPIO.setup(self.relay_light_device.pin, GPIO.OUT)
         GPIO.output(self.relay_light_device.pin, state)
+        time.sleep(1)
         GPIO.setup(self.relay_light_device.pin, GPIO.IN)
         print(GPIO.input(self.relay_light_device.pin))
+        time.sleep(1)
         self.relay_light_device.state = RelayStateEnum(state).name
         return self.relay_light_device
 
