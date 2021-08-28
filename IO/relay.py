@@ -69,6 +69,8 @@ class Relay(object):
         print(self.relay_light_device.pin)
         GPIO.setup(self.relay_light_device.pin, GPIO.OUT)
         GPIO.output(self.relay_light_device.pin, state)
+        GPIO.setup(self.relay_light_device.pin, GPIO.IN)
+        print(GPIO.input(self.relay_light_device.pin))
         self.relay_light_device.state = RelayStateEnum(state).name
         return self.relay_light_device
 
