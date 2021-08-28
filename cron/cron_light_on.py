@@ -1,5 +1,5 @@
-import os
-user_home = os.environ["KRAKEN_SENSOR_HOME"]
+import sys
+sys.path.append("/home/pi/Kraken/kraken-sensor/cron")
 from IO.relay import Relay
 from models.relay_device import RelayStateEnum
 
