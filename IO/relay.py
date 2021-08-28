@@ -70,6 +70,8 @@ class Relay(object):
 
     def change_light_relay_state(self, state):
         GPIO.output(self.relay_light_device.pin, state)
+        time.sleep(2)
+        print(self.read_light_relay_state())
         self.relay_light_device.state = RelayStateEnum(state).name
         return self.relay_light_device
 
