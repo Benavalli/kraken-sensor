@@ -28,32 +28,32 @@ class Relay(object):
         #GPIO.cleanup()
 
     def __loading_connected_relays(self):
-        relay_light_pin = int(self.config.get("PIN", "light.gpio.pin"))
-        relay_light_state = self.__read_device_state(relay_light_pin)
+        relay_light_pin = self.config.getint("PIN", "light.gpio.pin")
+        relay_light_state = self.__setup_device(relay_light_pin)
         self.relay_light_device = RelayDevice(
             RelayDeviceEnum.LIGHT.name,
             relay_light_pin,
             RelayStateEnum(relay_light_state).name
         )
 
-        relay_exhaust_pin = int(self.config.get("PIN", "exhaust.gpio.pin"))
-        relay_exhaust_state = self.__read_device_state(relay_exhaust_pin)
+        relay_exhaust_pin = self.config.getint("PIN", "exhaust.gpio.pin")
+        relay_exhaust_state = self.__setup_device(relay_exhaust_pin)
         self.relay_exhaust_device = RelayDevice(
             RelayDeviceEnum.EXHAUST.name,
             relay_exhaust_pin,
             RelayStateEnum(relay_exhaust_state).name
         )
 
-        relay_humidifier_pin = int(self.config.get("PIN", "humidifier.gpio.pin"))
-        relay_humidifier_state = self.__read_device_state(relay_humidifier_pin)
+        relay_humidifier_pin = self.config.getint("PIN", "humidifier.gpio.pin")
+        relay_humidifier_state = self.__setup_device(relay_humidifier_pin)
         self.relay_humidifier_device = RelayDevice(
             RelayDeviceEnum.HUMIDIFIER.name,
             relay_humidifier_pin,
             RelayStateEnum(relay_humidifier_state).name
         )
 
-        relay_pump_pin = int(self.config.get("PIN", "pump.gpio.pin"))
-        relay_pump_state = self.__read_device_state(relay_pump_pin)
+        relay_pump_pin = self.config.getint("PIN", "pump.gpio.pin")
+        relay_pump_state = self.__setup_device(relay_pump_pin)
         self.relay_pump_device = RelayDevice(
             RelayDeviceEnum.PUMP.name,
             relay_pump_pin,
@@ -61,9 +61,12 @@ class Relay(object):
         )
 
     @staticmethod
-    def __read_device_state(pin):
+    def __setup_device(pin):
         GPIO.setup(pin, GPIO.OUT)
         return GPIO.input(pin)
+
+    def read_light_relay_state(self):
+        GPIO.input(self.relay_light_device.pin)
 
     def change_light_relay_state(self, state):
         GPIO.output(self.relay_light_device.pin, state)
