@@ -72,10 +72,8 @@ class Relay(object):
         time.sleep(1)
         GPIO.setup(self.relay_light_device.pin, GPIO.OUT)
         GPIO.output(self.relay_light_device.pin, state)
-        time.sleep(1)
-        GPIO.setup(self.relay_light_device.pin, GPIO.IN)
-        print(GPIO.input(self.relay_light_device.pin))
-        time.sleep(1)
+        time.sleep(3)
+
         self.relay_light_device.state = RelayStateEnum(state).name
         return self.relay_light_device
 
