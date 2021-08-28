@@ -21,8 +21,8 @@ class Relay(object):
             cls.__loading_connected_relays(cls.instance)
         return cls.instance
 
-    def __del__(self):
-        GPIO.cleanup()
+    #def __del__(self):
+        #GPIO.cleanup()
 
     def __loading_connected_relays(self):
         relay_light_pin = int(self.config.get("PIN", "light.gpio.pin"))
