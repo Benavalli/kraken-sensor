@@ -9,7 +9,7 @@ if __name__ == "__main__":
     relay = Relay()
     time.sleep(2)
     aqui = relay.read_light_relay_state()
-    print(aqui + " 1333")
+    print(aqui)
 
     if relay.read_light_relay_state() == RelayStateEnum.ENABLED.value:
         print("ativo")
