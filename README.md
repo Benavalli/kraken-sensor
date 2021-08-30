@@ -23,4 +23,4 @@ PYTHONPATH=/home/pi/Kraken/kraken-sensor
 
 # Server
 
-   - Run `nohup python server.py` 
+   - Run `nohup python3 server.py` 
