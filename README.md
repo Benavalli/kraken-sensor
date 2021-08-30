@@ -14,8 +14,8 @@ Raspberry PI application to read temperature, humidity and measure LUX. The appl
  
 ```
 PYTHONPATH=/home/pi/Kraken/kraken-sensor
-0 8 * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_on.py
-0 1 * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_off.py
+0 8 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_on.py
+0 1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_off.py
 ```
 
 # Server
