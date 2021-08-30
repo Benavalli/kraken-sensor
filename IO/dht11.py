@@ -1,16 +1,28 @@
 import time
-import board
 import Adafruit_DHT
+import configparser
+import os
 
 from models.temperature_humidity import TemperatureHumidity
 
 
-class Dht11:
+class Dht11(object):
 
-    DHT_SENSOR = Adafruit_DHT.DHT11
-    DHT_PIN = 5
-    retries = 5
-    sleepTime = 2.0
+    instance = None
+    config = configparser.RawConfigParser()
+
+    def __new__(cls):
+        if cls.instance is None:
+            cls.instance = super(Dht11, cls).__new__(cls)
+            cls.config.read(os.path.join(os.path.dirname(__file__), '../config.properties'))
+            cls.__load_dht11_sensor(cls.instance)
+        return cls.instance
+
+    def __load_dht11_sensor(self):
+        self.dht_sensor = Adafruit_DHT.DHT11
+        self.dht_sensor_pin = self.config.getint('DHT11', 'dht11.gpio.pin')
+        self.retries = self.config.getint('DHT11', 'dht11.retries')
+        self.sleepTime = self.config.getfloat('DHT11', 'dht11.sleep.time')
 
     def get_temperature_humidity(self):
         temperature_humidity_list = []
@@ -18,12 +30,13 @@ class Dht11:
             temperature_humidity = self.__read_dht11_sensor()
             if temperature_humidity is not None:
                 temperature_humidity_list.append(temperature_humidity)
+            if x < self.retries - 1:
+                time.sleep(self.sleepTime)
         return self.__temperature_humidity_average(temperature_humidity_list)
 
     def __read_dht11_sensor(self):
         try:
-            time.sleep(2.0)
-            humidity, temperature = Adafruit_DHT.read(self.DHT_SENSOR, self.DHT_PIN)
+            humidity, temperature = Adafruit_DHT.read(self.dht_sensor, self.dht_sensor_pin)
             if humidity is not None and temperature is not None:
                 return TemperatureHumidity(temperature, humidity)
             else:
@@ -33,7 +46,6 @@ class Dht11:
             return None
         except KeyboardInterrupt:
             print('interrupted!')
-            #GPIO.cleanup()
             return None
 
     @staticmethod

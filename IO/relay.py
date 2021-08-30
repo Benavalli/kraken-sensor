@@ -6,6 +6,7 @@ from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
 class Relay(object):
+
     instance = None
     config = configparser.RawConfigParser()
 
@@ -20,7 +21,7 @@ class Relay(object):
         return cls.instance
 
     def __loading_connected_relays(self):
-        relay_light_pin = self.config.getint('PIN', 'light.gpio.pin')
+        relay_light_pin = self.config.getint('RELAY', 'light.gpio.pin')
         relay_light_state = self.__setup_device(relay_light_pin)
         self.relay_light_device = RelayDevice(
             RelayDeviceEnum.LIGHT.name,
@@ -28,7 +29,7 @@ class Relay(object):
             RelayStateEnum(relay_light_state).name
         )
 
-        relay_exhaust_pin = self.config.getint('PIN', 'exhaust.gpio.pin')
+        relay_exhaust_pin = self.config.getint('RELAY', 'exhaust.gpio.pin')
         relay_exhaust_state = self.__setup_device(relay_exhaust_pin)
         self.relay_exhaust_device = RelayDevice(
             RelayDeviceEnum.EXHAUST.name,
@@ -36,7 +37,7 @@ class Relay(object):
             RelayStateEnum(relay_exhaust_state).name
         )
 
-        relay_humidifier_pin = self.config.getint('PIN', 'humidifier.gpio.pin')
+        relay_humidifier_pin = self.config.getint('RELAY', 'humidifier.gpio.pin')
         relay_humidifier_state = self.__setup_device(relay_humidifier_pin)
         self.relay_humidifier_device = RelayDevice(
             RelayDeviceEnum.HUMIDIFIER.name,
@@ -44,7 +45,7 @@ class Relay(object):
             RelayStateEnum(relay_humidifier_state).name
         )
 
-        relay_pump_pin = self.config.getint('PIN', 'pump.gpio.pin')
+        relay_pump_pin = self.config.getint('RELAY', 'pump.gpio.pin')
         relay_pump_state = self.__setup_device(relay_pump_pin)
         self.relay_pump_device = RelayDevice(
             RelayDeviceEnum.PUMP.name,
