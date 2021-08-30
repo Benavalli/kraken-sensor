@@ -1,5 +1,7 @@
-from ..IO.relay import Relay
+from IO.relay import Relay
 from models.relay_device import RelayStateEnum
 
 if __name__ == "__main__":
-    Relay().change_light_relay_state(RelayStateEnum.DISABLED)
+    relay = Relay()
+    if relay.read_light_relay_state() == RelayStateEnum.ENABLED.value:
+        relay.change_light_relay_state(RelayStateEnum.DISABLED.value)
