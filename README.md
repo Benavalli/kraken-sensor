@@ -1,5 +1,7 @@
 # kraken-sensor
-Raspberry PI application to read temperature, humidity and measure LUX. The application is also managing connected devices using a relay board module.
+Raspberry PI application to read temperature, humidity and measure LUX. 
+Management of connected devices using a relay board module.
+Routines to be added in Raspberry PI contrab.
 
 # Setup Environment
 
