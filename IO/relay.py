@@ -15,7 +15,7 @@ class Relay(object):
             # Setting GPIO pin numbers
             if GPIO.getmode() != GPIO.BCM:
                 GPIO.setmode(GPIO.BCM)
-            cls.config.read("../config.properties")
+            cls.config.read("config.properties")
             cls.__loading_connected_relays(cls.instance)
         return cls.instance
 
