@@ -18,6 +18,7 @@ PYTHONPATH=/home/pi/Kraken/kraken-sensor
 0 1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_off.py
 0 8-23,0-1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_pump_on.py
 */40 8-23,0-1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_pump_off.py
+*/10 * * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_temperature_humidity.py
 ```
 
 # Server
