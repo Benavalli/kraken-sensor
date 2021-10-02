@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 import configparser
-import json
 import os
 
 from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
@@ -108,5 +107,10 @@ class Relay(object):
         GPIO.output(self.relay_pump_device.pin, state)
 
     def get_device_list(self):
-        return json.dumps([self.relay_light_device, self.relay_exhaust_device, self.relay_humidifier_device,
-                           self.relay_pump_device])
+        relays = [
+            self.relay_light_device,
+            self.relay_exhaust_device,
+            self.relay_humidifier_device,
+            self.relay_pump_device
+        ]
+        return dict.fromkeys(relays, "relay")

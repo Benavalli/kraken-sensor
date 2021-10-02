@@ -15,7 +15,7 @@ def get_temperature_humidity():
 @app.route('/relays', methods=['GET'])
 def get_relays():
     relay_list = Relay().get_device_list()
-    return jsonify({'relays': relay_list})
+    return jsonify({'relays': relay_list.__dict__})
 
 
 @app.route('/light-relay-state', methods=['POST'])
