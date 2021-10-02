@@ -107,9 +107,7 @@ class Relay(object):
         GPIO.output(self.relay_pump_device.pin, state)
 
     def get_device_list(self):
-        return {
-            self.relay_light_device,
-            self.relay_exhaust_device,
-            self.relay_humidifier_device,
-            self.relay_pump_device
-        }
+        return [self.relay_light_device,
+                self.relay_exhaust_device,
+                self.relay_humidifier_device,
+                self.relay_pump_device]
