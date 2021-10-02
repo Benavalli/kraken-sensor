@@ -54,7 +54,7 @@ class Dht11(object):
         humidity_count = 0
         list_size = len(temperature_humidity_list)
         for temperature_humidity in temperature_humidity_list:
-            temperature_count += temperature_humidity.celsius
+            temperature_count += temperature_humidity.temp
             humidity_count += temperature_humidity.humidity
         temperature_average = temperature_count / list_size
         humidity_average = humidity_count / list_size
