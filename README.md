@@ -17,11 +17,12 @@ Routines to be added in Raspberry PI contrab.
  
 ```
 PYTHONPATH=/home/pi/Kraken/kraken-sensor
-5 8 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_on.py
-5 1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_off.py
+4 8 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_on.py
+4 20 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_light_off.py
 1 8-23,0-1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_pump_on.py
 */41 8-23,0-1 * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_pump_off.py
-*/10 * * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_temperature_humidity.py
+*/5 * * * * python3 /home/pi/Kraken/kraken-sensor/cron/cron_temperature_humidity.py
+@reboot python3 /home/pi/Kraken/kraken-sensor/server/server.py > /home/pi/Kraken/server.log
 ```
 
 # Server
