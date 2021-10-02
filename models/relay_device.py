@@ -1,4 +1,3 @@
-import json
 import enum
 
 
@@ -20,6 +19,3 @@ class RelayDevice:
         self.device = device
         self.pin = pin
         self.state = state
-
-    def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
