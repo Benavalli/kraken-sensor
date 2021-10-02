@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+import json
 
+from flask import Flask, request, jsonify
 from IO.dht11 import Dht11
 from IO.relay import Relay
 
@@ -15,7 +16,7 @@ def get_temperature_humidity():
 @app.route('/relays', methods=['GET'])
 def get_relays():
     relay_list = Relay().get_device_list()
-    return jsonify(relay_list)
+    return jsonify({'relay-devices': json.dumps([ob.__dict__ for ob in relay_list])})
 
 
 @app.route('/light-relay-state', methods=['POST'])
