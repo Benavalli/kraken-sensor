@@ -83,23 +83,23 @@ class Relay(object):
         return pump_relay_state
 
     def change_light_relay_state(self, state):
-        GPIO.output(self.relay_light_device.pin, state)
-        self.relay_light_device.state = RelayStateEnum(state).name
+        GPIO.output(self.relay_light_device.pin, RelayStateEnum[state].value)
+        self.relay_light_device.state = RelayStateEnum[state].name
         return self.relay_light_device
 
     def change_exhaust_relay_state(self, state):
-        GPIO.output(self.relay_exhaust_device.pin, state)
-        self.relay_exhaust_device.state = RelayStateEnum(state).name
+        GPIO.output(self.relay_exhaust_device.pin, RelayStateEnum[state].value)
+        self.relay_exhaust_device.state = RelayStateEnum[state].name
         return self.relay_exhaust_device
 
     def change_humidifier_relay_state(self, state):
-        GPIO.output(self.relay_humidifier_device.pin, state)
-        self.relay_humidifier_device.state = RelayStateEnum(state).name
+        GPIO.output(self.relay_humidifier_device.pin, RelayStateEnum[state].value)
+        self.relay_humidifier_device.state = RelayStateEnum[state].name
         return self.relay_humidifier_device
 
     def change_pump_relay_state(self, state):
-        GPIO.output(self.relay_pump_device.pin, state)
-        self.relay_pump_device.state = RelayStateEnum(state).name
+        GPIO.output(self.relay_pump_device.pin, RelayStateEnum[state].value)
+        self.relay_pump_device.state = RelayStateEnum[state].name
         return self.relay_pump_device
 
     def __change_relay_state(self, pin, state):
