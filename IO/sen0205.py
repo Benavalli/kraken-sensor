@@ -20,7 +20,7 @@ class Sen0205(object):
 
     def __load_water_level_sensor(self):
         self.water_level_sensor_pin = self.config.getint('SEN0205', 'sen0205.gpio.pin')
-        GPIO.setup(self.water_level_sensor_pin, GPIO.IN)
+        GPIO.setup(self.water_level_sensor_pin, GPIO.OUT)
 
     def get_water_level_sensor_state(self):
         return GPIO.input(self.water_level_sensor_pin)
