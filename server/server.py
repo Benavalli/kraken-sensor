@@ -51,5 +51,29 @@ def post_pump_relay_state():
     return jsonify({'relay-device': relay_device.__dict__})
 
 
+@app.route('/fan-relay-state', methods=['POST'])
+def post_fan_relay_state():
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_fan_relay_state(device_state)
+    return jsonify({'relay-device': relay_device.__dict__})
+
+
+@app.route('/inline-fan-relay-state', methods=['POST'])
+def post_inline_fan_relay_state():
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_inline_fan_relay_state(device_state)
+    return jsonify({'relay-device': relay_device.__dict__})
+
+
+@app.route('/valve-relay-state', methods=['POST'])
+def post_valve_relay_state():
+    request_data = request.get_json()
+    device_state = request_data['state']
+    relay_device = Relay().change_valve_relay_state(device_state)
+    return jsonify({'relay-device': relay_device.__dict__})
+
+
 if __name__ == '__main__':
-    app.run(host='192.168.86.184')
+    app.run(host='192.168.86.24')

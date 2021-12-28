@@ -53,6 +53,30 @@ class Relay(object):
             RelayStateEnum(relay_pump_state).name
         )
 
+        relay_fan_pin = self.config.getint('RELAY', 'fan.gpio.pin')
+        relay_fan_state = self.__setup_device(relay_fan_pin)
+        self.relay_fan_device = RelayDevice(
+            RelayDeviceEnum.FAN.name,
+            relay_fan_pin,
+            RelayStateEnum(relay_fan_state).name
+        )
+
+        relay_inline_fan_pin = self.config.getint('RELAY', 'inline.fan.gpio.pin')
+        relay_inline_fan_state = self.__setup_device(relay_inline_fan_pin)
+        self.relay_inline_fan_device = RelayDevice(
+            RelayDeviceEnum.INLINE_FAN.name,
+            relay_inline_fan_pin,
+            RelayStateEnum(relay_inline_fan_state).name
+        )
+
+        relay_valve_pin = self.config.getint('RELAY', 'valve.gpio.pin')
+        relay_valve_state = self.__setup_device(relay_valve_pin)
+        self.relay_valve_device = RelayDevice(
+            RelayDeviceEnum.VALVE.name,
+            relay_valve_pin,
+            RelayStateEnum(relay_valve_state).name
+        )
+
     @staticmethod
     def __setup_device(pin):
         try:
@@ -82,6 +106,18 @@ class Relay(object):
         pump_relay_state = GPIO.input(self.relay_pump_device.pin)
         return pump_relay_state
 
+    def read_fan_relay_state(self):
+        fan_relay_state = GPIO.input(self.relay_fan_device.pin)
+        return fan_relay_state
+
+    def read_inline_fan_relay_state(self):
+        inline_fan_relay_state = GPIO.input(self.relay_inline_fan_device.pin)
+        return inline_fan_relay_state
+
+    def read_valve_relay_state(self):
+        valve_relay_state = GPIO.input(self.relay_valve_device.pin)
+        return valve_relay_state
+
     def change_light_relay_state(self, state):
         GPIO.output(self.relay_light_device.pin, RelayStateEnum[state].value)
         self.relay_light_device.state = RelayStateEnum[state].name
@@ -102,6 +138,21 @@ class Relay(object):
         self.relay_pump_device.state = RelayStateEnum[state].name
         return self.relay_pump_device
 
+    def change_fan_relay_state(self, state):
+        GPIO.output(self.relay_fan_device.pin, RelayStateEnum[state].value)
+        self.relay_fan_device.state = RelayStateEnum[state].name
+        return self.relay_fan_device
+
+    def change_inline_fan_relay_state(self, state):
+        GPIO.output(self.relay_inline_fan_device.pin, RelayStateEnum[state].value)
+        self.relay_inline_fan_device.state = RelayStateEnum[state].name
+        return self.relay_inline_fan_device
+
+    def change_valve_relay_state(self, state):
+        GPIO.output(self.relay_valve_device.pin, RelayStateEnum[state].value)
+        self.relay_valve_device.state = RelayStateEnum[state].name
+        return self.relay_valve_device
+
     def __change_relay_state(self, pin, state):
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(self.relay_pump_device.pin, state)
@@ -111,5 +162,8 @@ class Relay(object):
             self.relay_light_device,
             self.relay_exhaust_device,
             self.relay_humidifier_device,
-            self.relay_pump_device
+            self.relay_pump_device,
+            self.relay_fan_device,
+            self.relay_inline_fan_device,
+            self.relay_valve_device
         ]
