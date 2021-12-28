@@ -6,6 +6,9 @@ class RelayDeviceEnum(enum.Enum):
     EXHAUST = 2
     HUMIDIFIER = 3
     PUMP = 4
+    FAN = 5
+    INLINE_FAN = 6
+    VALVE = 7
 
 
 class RelayStateEnum(enum.Enum):
