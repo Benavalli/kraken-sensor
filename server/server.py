@@ -76,4 +76,4 @@ def post_valve_relay_state():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.86.24')
+    app.run(host='192.168.86.27')
