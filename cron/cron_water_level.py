@@ -1,26 +1,24 @@
 from IO.relay import Relay
-from IO.sen0205 import Sen0205
+from IO.water_level_sensors import WaterLevelSensors
 import time
 
 from models.relay_device import RelayStateEnum
-from models.water_level import WaterLevelEnum
+from models.water_level_sensor import WaterLevelStateEnum
 
 if __name__ == "__main__":
-    water_level_sensor = Sen0205()
+    water_level_sensors = WaterLevelSensors()
     relay = Relay()
 
-    while True:
-        try:
-            if water_level_sensor.get_water_level_sensor_state() == WaterLevelEnum.LOW.value and \
-                    relay.read_valve_relay_state() == RelayStateEnum.DISABLED.value:
-                relay.change_valve_relay_state(RelayStateEnum.ENABLED.name)
-
-            if water_level_sensor.get_water_level_sensor_state() == WaterLevelEnum.HIGH.value and \
-                    relay.read_valve_relay_state() == RelayStateEnum.ENABLED.value:
-                relay.change_valve_relay_state(RelayStateEnum.DISABLED.name)
+    if water_level_sensors.get_water_min_level_sensor_state() == WaterLevelStateEnum.LOW.value:
+         if relay.read_valve_relay_state() == RelayStateEnum.DISABLED.value:
+                    relay.change_valve_relay_state(RelayStateEnum.ENABLED.name)
+                    
+         while True:
+            try:
+                if water_level_sensors.get_water_max_level_sensor_state == WaterLevelStateEnum.LOW.value:
+                    time.sleep(0.3)
+                else:
+                    relay.change_valve_relay_state(RelayStateEnum.DISABLED.name)
+                    break
+            except:
                 break
-
-            time.sleep(0.3)
-
-        except:
-            break
