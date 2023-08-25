@@ -2,11 +2,10 @@ from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from database.tables import Measures, Events, Pictures
-
+from data.tables import Measures, Events, Pictures
 import os
 
-def get_database():
+def get_engine():
     engine_url = 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'Kraken.db')
     engine = create_engine(engine_url)
     if not database_exists(engine_url):
@@ -29,4 +28,4 @@ def persist_object(database, table_object):
     finally:
         session.close()
 
-__create_tables(get_database())
+__create_tables(get_engine())
