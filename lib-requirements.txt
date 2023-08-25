@@ -3,3 +3,6 @@ Adafruit_DHT==1.4.0
 RPi.GPIO==0.7.0
 Flask==2.0.1
 configparser==5.0.2
+pysqlite3==0.5.1
+SQLAlchemy==2.0.20
+SQLAlchemy-Utils==0.41.1
