@@ -38,4 +38,4 @@ install_db_tools
 show_python_version
 install_requirements
 export 	PYTHONPATH=$(pwd)
-python $(pwd)/database/database.py
+python $(pwd)/data/db_manager.py
