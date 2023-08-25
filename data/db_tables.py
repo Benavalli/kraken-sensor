@@ -14,7 +14,8 @@ class Events(Base):
     __tablename__ = 'events'
     id = Column(Integer, Sequence('events_seq'), primary_key = True)
     date = Column(DateTime)
-    name = Column(String)
+    device = Column(String)
+    state = Column(String)
 
 class Pictures(Base):
     __tablename__ = 'pictures'

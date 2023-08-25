@@ -42,10 +42,12 @@ class WaterLevelSensors(object):
         return GPIO.input(self.water_level_min_sensor.pin)
     
     def print_water_level_sensors_state(self):
-         print("Max level: {} , Min level: {}"
-              .format(
-                GPIO.input(self.water_level_max_sensor.pin),
-                GPIO.input(self.water_level_min_sensor.pin) 
-              )
+        max_sensor_level = GPIO.input(self.water_level_max_sensor.pin)
+        min_sensor_level = GPIO.input(self.water_level_min_sensor.pin)
+        print("Max level: {} , Min level: {}"
+            .format(
+                WaterLevelStateEnum(max_sensor_level).name,
+                WaterLevelStateEnum(min_sensor_level).name 
             )
+        )
           

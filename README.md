@@ -19,9 +19,10 @@ Pre defined routines to be added in Raspberry PI contrab.
 PYTHONPATH=/home/{user-name}/{clone-path}/kraken-sensor
 4 8 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_light_on.py
 4 20 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_light_off.py
-1 8-23,0-1 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_pump_on.py
-*/41 8-23,0-1 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_pump_off.py
+1 8-23,0-1 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_fan_on.py
+*/41 8-23,0-1 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_fan_off.py
 */5 * * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_temperature_humidity.py
+*/5 * * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_camera.py
 30 8 * * * python /home/{user-name}/{clone-path}/kraken-sensor/cron/cron_water_level.py
 ```
 
