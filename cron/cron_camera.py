@@ -1,6 +1,7 @@
-from IO.camera import pi_camera
+from IO.camera import picture_camera
 
 
 if __name__ == "__main__":
-	picture_file_name = pi_camera.Camera.take_picture()
-	pi_camera.Camera.save_picture(picture_file_name)
+	camera = picture_camera.PictureCamera()
+	picture_file_name = camera.take_picture()
+	camera.save_picture(picture_file_name)
