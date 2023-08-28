@@ -2,14 +2,14 @@ from time import sleep
 from datetime import datetime
 from data import db_manager
 from data.db_tables import Pictures
-from base_camera import BaseCamera
+from IO.camera import base_camera
 
 import picamera
 import os
 import io
 
 
-class Camera(BaseCamera):
+class Camera(base_camera.BaseCamera):
     
     @staticmethod
     def frames():

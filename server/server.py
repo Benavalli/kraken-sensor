@@ -1,12 +1,10 @@
-import json
-
 from flask import Flask, request, jsonify, render_template, Response
 from IO.dht11 import Dht11
 from IO.relay import Relay
-from IO.camera import Camera
+from IO.camera import pi_camera
 
-app = Flask(__name__)
 
+app = Flask(__name__, template_folder='../templates')
 
 @app.route('/temperature-humidity', methods=['GET'])
 def get_temperature_humidity():
@@ -82,7 +80,7 @@ def __gen(camera):
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(__gen(Camera()),
+    return Response(__gen(pi_camera.Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
