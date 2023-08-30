@@ -3,6 +3,9 @@ import configparser
 import os
 
 from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
+from data import db_manager
+from data.db_tables import Events
+from datetime import datetime
 
 
 class Relay(object):
@@ -13,6 +16,7 @@ class Relay(object):
     def __new__(cls):
         if cls.instance is None:
             cls.instance = super(Relay, cls).__new__(cls)
+            GPIO.setwarnings(False)
             # Setting GPIO pin numbers
             if GPIO.getmode() != GPIO.BCM:
                 GPIO.setmode(GPIO.BCM)
@@ -121,41 +125,44 @@ class Relay(object):
     def change_light_relay_state(self, state):
         GPIO.output(self.relay_light_device.pin, RelayStateEnum[state].value)
         self.relay_light_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_light_device)
         return self.relay_light_device
 
     def change_exhaust_relay_state(self, state):
         GPIO.output(self.relay_exhaust_device.pin, RelayStateEnum[state].value)
         self.relay_exhaust_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_exhaust_device)
         return self.relay_exhaust_device
 
     def change_humidifier_relay_state(self, state):
         GPIO.output(self.relay_humidifier_device.pin, RelayStateEnum[state].value)
         self.relay_humidifier_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_humidifier_device)
         return self.relay_humidifier_device
 
     def change_pump_relay_state(self, state):
         GPIO.output(self.relay_pump_device.pin, RelayStateEnum[state].value)
         self.relay_pump_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_pump_device)
         return self.relay_pump_device
 
     def change_fan_relay_state(self, state):
         GPIO.output(self.relay_fan_device.pin, RelayStateEnum[state].value)
         self.relay_fan_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_fan_device)
         return self.relay_fan_device
 
     def change_inline_fan_relay_state(self, state):
         GPIO.output(self.relay_inline_fan_device.pin, RelayStateEnum[state].value)
         self.relay_inline_fan_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_inline_fan_device)
         return self.relay_inline_fan_device
 
     def change_valve_relay_state(self, state):
         GPIO.output(self.relay_valve_device.pin, RelayStateEnum[state].value)
         self.relay_valve_device.state = RelayStateEnum[state].name
+        self.__log_db_event(self.relay_valve_device)
         return self.relay_valve_device
-
-    def __change_relay_state(self, pin, state):
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(self.relay_pump_device.pin, state)
 
     def get_device_list(self):
         return [
@@ -167,3 +174,12 @@ class Relay(object):
             self.relay_inline_fan_device,
             self.relay_valve_device
         ]
+    
+    def __log_db_event(self, relay_device):
+        engine = db_manager.get_engine()
+        event_object = Events(
+            date = datetime.now(), 
+            device = relay_device.device, 
+            state = relay_device.state
+        )
+        db_manager.persist_object(engine, event_object)
