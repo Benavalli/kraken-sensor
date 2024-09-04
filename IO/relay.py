@@ -18,6 +18,8 @@ class Relay(object):
                 GPIO.setmode(GPIO.BCM)
             cls.config.read(os.path.join(os.path.dirname(__file__), '../config.properties'))
             cls.__loading_connected_relays(cls.instance)
+            # Ensure the valve is in the correct state after startup
+            cls.instance.change_valve_relay_state(RelayStateEnum.DISABLED.name)
         return cls.instance
 
     def __loading_connected_relays(self):
@@ -82,12 +84,14 @@ class Relay(object):
         try:
             state = GPIO.input(pin)
             return state
-        except:
+        except Exception as e:
+            print(f"Error reading pin {pin}: {e}")
             try:
-                GPIO.setup(pin, GPIO.OUT)
+                GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
                 state = GPIO.input(pin)
                 return state
-            except:
+            except Exception as e:
+                print(f"Error setting up pin {pin}: {e}")
                 return None
 
     def read_light_relay_state(self):
@@ -167,3 +171,12 @@ class Relay(object):
             self.relay_inline_fan_device,
             self.relay_valve_device
         ]
+
+    @staticmethod
+    def cleanup():
+        """Clean up GPIO on exit"""
+        GPIO.cleanup()
+
+    def __del__(self):
+        """Ensure GPIO is cleaned up on destruction"""
+        self.cleanup()
