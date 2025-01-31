@@ -30,7 +30,7 @@ class Relay(object):
         """Configura um dispositivo de relé."""
         pin = self.config.getint('RELAY', config_key)
         relay = LED(pin)
-        state = RelayStateEnum.ON.name if relay.is_active else RelayStateEnum.OFF.name
+        state = RelayStateEnum.ENABLED.name if relay.is_active else RelayStateEnum.DISABLED.name
         return RelayDevice(device_enum.name, pin, state)
 
     def read_light_relay_state(self):
@@ -79,7 +79,7 @@ class Relay(object):
         """Altera o estado de um relé."""
         relay = LED(device.pin)
 
-        if RelayStateEnum[state] == RelayStateEnum.ON:
+        if RelayStateEnum[state] == RelayStateEnum.ENABLED:
             relay.on()
         else:
             relay.off()
