@@ -1,7 +1,6 @@
-import RPi.GPIO as GPIO
 import configparser
 import os
-
+from gpiozero import LED
 from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
@@ -13,151 +12,83 @@ class Relay(object):
     def __new__(cls):
         if cls.instance is None:
             cls.instance = super(Relay, cls).__new__(cls)
-            # Setting GPIO pin numbers
-            if GPIO.getmode() != GPIO.BCM:
-                GPIO.setmode(GPIO.BCM)
             cls.config.read(os.path.join(os.path.dirname(__file__), '../config.properties'))
             cls.__loading_connected_relays(cls.instance)
         return cls.instance
 
     def __loading_connected_relays(self):
-        relay_light_pin = self.config.getint('RELAY', 'light.gpio.pin')
-        relay_light_state = self.__setup_device(relay_light_pin)
-        self.relay_light_device = RelayDevice(
-            RelayDeviceEnum.LIGHT.name,
-            relay_light_pin,
-            RelayStateEnum(relay_light_state).name
-        )
+        """Carrega os relés conectados a partir do arquivo de configuração."""
+        self.relay_light_device = self.__setup_device(RelayDeviceEnum.LIGHT, 'light.gpio.pin')
+        self.relay_exhaust_device = self.__setup_device(RelayDeviceEnum.EXHAUST, 'exhaust.gpio.pin')
+        self.relay_humidifier_device = self.__setup_device(RelayDeviceEnum.HUMIDIFIER, 'humidifier.gpio.pin')
+        self.relay_pump_device = self.__setup_device(RelayDeviceEnum.PUMP, 'pump.gpio.pin')
+        self.relay_fan_device = self.__setup_device(RelayDeviceEnum.FAN, 'fan.gpio.pin')
+        self.relay_inline_fan_device = self.__setup_device(RelayDeviceEnum.INLINE_FAN, 'inline.fan.gpio.pin')
+        self.relay_valve_device = self.__setup_device(RelayDeviceEnum.VALVE, 'valve.gpio.pin')
 
-        relay_exhaust_pin = self.config.getint('RELAY', 'exhaust.gpio.pin')
-        relay_exhaust_state = self.__setup_device(relay_exhaust_pin)
-        self.relay_exhaust_device = RelayDevice(
-            RelayDeviceEnum.EXHAUST.name,
-            relay_exhaust_pin,
-            RelayStateEnum(relay_exhaust_state).name
-        )
-
-        relay_humidifier_pin = self.config.getint('RELAY', 'humidifier.gpio.pin')
-        relay_humidifier_state = self.__setup_device(relay_humidifier_pin)
-        self.relay_humidifier_device = RelayDevice(
-            RelayDeviceEnum.HUMIDIFIER.name,
-            relay_humidifier_pin,
-            RelayStateEnum(relay_humidifier_state).name
-        )
-
-        relay_pump_pin = self.config.getint('RELAY', 'pump.gpio.pin')
-        relay_pump_state = self.__setup_device(relay_pump_pin)
-        self.relay_pump_device = RelayDevice(
-            RelayDeviceEnum.PUMP.name,
-            relay_pump_pin,
-            RelayStateEnum(relay_pump_state).name
-        )
-
-        relay_fan_pin = self.config.getint('RELAY', 'fan.gpio.pin')
-        relay_fan_state = self.__setup_device(relay_fan_pin)
-        self.relay_fan_device = RelayDevice(
-            RelayDeviceEnum.FAN.name,
-            relay_fan_pin,
-            RelayStateEnum(relay_fan_state).name
-        )
-
-        relay_inline_fan_pin = self.config.getint('RELAY', 'inline.fan.gpio.pin')
-        relay_inline_fan_state = self.__setup_device(relay_inline_fan_pin)
-        self.relay_inline_fan_device = RelayDevice(
-            RelayDeviceEnum.INLINE_FAN.name,
-            relay_inline_fan_pin,
-            RelayStateEnum(relay_inline_fan_state).name
-        )
-
-        relay_valve_pin = self.config.getint('RELAY', 'valve.gpio.pin')
-        relay_valve_state = self.__setup_device(relay_valve_pin)
-        self.relay_valve_device = RelayDevice(
-            RelayDeviceEnum.VALVE.name,
-            relay_valve_pin,
-            RelayStateEnum(relay_valve_state).name
-        )
-
-    @staticmethod
-    def __setup_device(pin):
-        try:
-            state = GPIO.input(pin)
-            return state
-        except:
-            try:
-                GPIO.setup(pin, GPIO.OUT)
-                state = GPIO.input(pin)
-                return state
-            except:
-                return None
+    def __setup_device(self, device_enum, config_key):
+        """Configura um dispositivo de relé."""
+        pin = self.config.getint('RELAY', config_key)
+        relay = LED(pin)
+        state = RelayStateEnum.ON.name if relay.is_active else RelayStateEnum.OFF.name
+        return RelayDevice(device_enum.name, pin, state)
 
     def read_light_relay_state(self):
-        light_relay_state = GPIO.input(self.relay_light_device.pin)
-        return light_relay_state
+        return self.relay_light_device.state
 
     def read_exhaust_relay_state(self):
-        exhaust_relay_state = GPIO.input(self.relay_exhaust_device.pin)
-        return exhaust_relay_state
+        return self.relay_exhaust_device.state
 
     def read_humidifier_relay_state(self):
-        humidifier_relay_state = GPIO.input(self.relay_humidifier_device.pin)
-        return humidifier_relay_state
+        return self.relay_humidifier_device.state
 
     def read_pump_relay_state(self):
-        pump_relay_state = GPIO.input(self.relay_pump_device.pin)
-        return pump_relay_state
+        return self.relay_pump_device.state
 
     def read_fan_relay_state(self):
-        fan_relay_state = GPIO.input(self.relay_fan_device.pin)
-        return fan_relay_state
+        return self.relay_fan_device.state
 
     def read_inline_fan_relay_state(self):
-        inline_fan_relay_state = GPIO.input(self.relay_inline_fan_device.pin)
-        return inline_fan_relay_state
+        return self.relay_inline_fan_device.state
 
     def read_valve_relay_state(self):
-        valve_relay_state = GPIO.input(self.relay_valve_device.pin)
-        return valve_relay_state
+        return self.relay_valve_device.state
 
     def change_light_relay_state(self, state):
-        GPIO.output(self.relay_light_device.pin, RelayStateEnum[state].value)
-        self.relay_light_device.state = RelayStateEnum[state].name
-        return self.relay_light_device
+        return self.__change_relay_state(self.relay_light_device, state)
 
     def change_exhaust_relay_state(self, state):
-        GPIO.output(self.relay_exhaust_device.pin, RelayStateEnum[state].value)
-        self.relay_exhaust_device.state = RelayStateEnum[state].name
-        return self.relay_exhaust_device
+        return self.__change_relay_state(self.relay_exhaust_device, state)
 
     def change_humidifier_relay_state(self, state):
-        GPIO.output(self.relay_humidifier_device.pin, RelayStateEnum[state].value)
-        self.relay_humidifier_device.state = RelayStateEnum[state].name
-        return self.relay_humidifier_device
+        return self.__change_relay_state(self.relay_humidifier_device, state)
 
     def change_pump_relay_state(self, state):
-        GPIO.output(self.relay_pump_device.pin, RelayStateEnum[state].value)
-        self.relay_pump_device.state = RelayStateEnum[state].name
-        return self.relay_pump_device
+        return self.__change_relay_state(self.relay_pump_device, state)
 
     def change_fan_relay_state(self, state):
-        GPIO.output(self.relay_fan_device.pin, RelayStateEnum[state].value)
-        self.relay_fan_device.state = RelayStateEnum[state].name
-        return self.relay_fan_device
+        return self.__change_relay_state(self.relay_fan_device, state)
 
     def change_inline_fan_relay_state(self, state):
-        GPIO.output(self.relay_inline_fan_device.pin, RelayStateEnum[state].value)
-        self.relay_inline_fan_device.state = RelayStateEnum[state].name
-        return self.relay_inline_fan_device
+        return self.__change_relay_state(self.relay_inline_fan_device, state)
 
     def change_valve_relay_state(self, state):
-        GPIO.output(self.relay_valve_device.pin, RelayStateEnum[state].value)
-        self.relay_valve_device.state = RelayStateEnum[state].name
-        return self.relay_valve_device
+        return self.__change_relay_state(self.relay_valve_device, state)
 
-    def __change_relay_state(self, pin, state):
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(self.relay_pump_device.pin, state)
+    def __change_relay_state(self, device, state):
+        """Altera o estado de um relé."""
+        relay = LED(device.pin)
+
+        if RelayStateEnum[state] == RelayStateEnum.ON:
+            relay.on()
+        else:
+            relay.off()
+
+        device.state = RelayStateEnum[state].name
+        return device
 
     def get_device_list(self):
+        """Retorna a lista de todos os relés configurados."""
         return [
             self.relay_light_device,
             self.relay_exhaust_device,
