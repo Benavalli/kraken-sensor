@@ -1,6 +1,3 @@
-import sys
-sys.path.append("/home/benavalli/.env/kraken-sensor")
-
 from IO.dht11 import Dht11
 from IO.relay import Relay
 from models.relay_device import RelayStateEnum
