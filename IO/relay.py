@@ -5,7 +5,6 @@ from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
 class Relay(object):
-
     instance = None
     config = configparser.RawConfigParser()
 
@@ -27,16 +26,19 @@ class Relay(object):
         self.relay_valve_device = self.__setup_device(RelayDeviceEnum.VALVE, 'valve.gpio.pin')
 
     def __setup_device(self, device_enum, config_key):
-        """Configures a relay device and stores the LED instance."""
+        """Configures a relay device and ensures state is stored properly."""
         pin = self.config.getint('RELAY', config_key)
-        relay = LED(pin)  # ✅ Store the LED instance in the device object
+        if hasattr(self, f"relay_{device_enum.name.lower()}_device"):  # Prevents recreation
+            return getattr(self, f"relay_{device_enum.name.lower()}_device")
+
+        relay = LED(pin)
         state = RelayStateEnum.ENABLED.name if relay.is_active else RelayStateEnum.DISABLED.name
-        return RelayDevice(device_enum.name, pin, state, relay)
+        return RelayDevice(device_enum.name, pin, state)
 
     def __change_relay_state(self, device, state):
         """Changes the state of a relay using its stored LED instance."""
         if RelayStateEnum[state] == RelayStateEnum.ENABLED:
-            device.relay.on()  # ✅ Uses the stored LED instance
+            device.relay.on()
         else:
             device.relay.off()
 
@@ -85,6 +87,11 @@ class Relay(object):
 
     def change_valve_relay_state(self, state):
         return self.__change_relay_state(self.relay_valve_device, state)
+
+    def toggle_relay_state(self, device):
+        """Toggles the relay between ENABLED and DISABLED states."""
+        new_state = RelayStateEnum.DISABLED.name if device.state == RelayStateEnum.ENABLED.name else RelayStateEnum.ENABLED.name
+        return self.__change_relay_state(device, new_state)
 
     def get_device_list(self):
         """Returns a list of all configured relays."""
