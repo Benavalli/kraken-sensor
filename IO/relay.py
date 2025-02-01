@@ -16,27 +16,26 @@ class Relay(object):
         return cls.instance
 
     def __loading_connected_relays(self):
-        """Loads all connected relays from the configuration file."""
-        self.relay_light_device = self.__setup_device(RelayDeviceEnum.LIGHT, 'light.gpio.pin')
-        self.relay_exhaust_device = self.__setup_device(RelayDeviceEnum.EXHAUST, 'exhaust.gpio.pin')
-        self.relay_humidifier_device = self.__setup_device(RelayDeviceEnum.HUMIDIFIER, 'humidifier.gpio.pin')
-        self.relay_pump_device = self.__setup_device(RelayDeviceEnum.PUMP, 'pump.gpio.pin')
-        self.relay_fan_device = self.__setup_device(RelayDeviceEnum.FAN, 'fan.gpio.pin')
-        self.relay_inline_fan_device = self.__setup_device(RelayDeviceEnum.INLINE_FAN, 'inline.fan.gpio.pin')
-        self.relay_valve_device = self.__setup_device(RelayDeviceEnum.VALVE, 'valve.gpio.pin')
+        """Carrega todos os relés do arquivo de configuração e mantém o estado."""
+        self.relays = {
+            RelayDeviceEnum.LIGHT: self.__setup_device(RelayDeviceEnum.LIGHT, 'light.gpio.pin'),
+            RelayDeviceEnum.EXHAUST: self.__setup_device(RelayDeviceEnum.EXHAUST, 'exhaust.gpio.pin'),
+            RelayDeviceEnum.HUMIDIFIER: self.__setup_device(RelayDeviceEnum.HUMIDIFIER, 'humidifier.gpio.pin'),
+            RelayDeviceEnum.PUMP: self.__setup_device(RelayDeviceEnum.PUMP, 'pump.gpio.pin'),
+            RelayDeviceEnum.FAN: self.__setup_device(RelayDeviceEnum.FAN, 'fan.gpio.pin'),
+            RelayDeviceEnum.INLINE_FAN: self.__setup_device(RelayDeviceEnum.INLINE_FAN, 'inline.fan.gpio.pin'),
+            RelayDeviceEnum.VALVE: self.__setup_device(RelayDeviceEnum.VALVE, 'valve.gpio.pin'),
+        }
 
     def __setup_device(self, device_enum, config_key):
-        """Configures a relay device and ensures state is stored properly."""
+        """Configura um dispositivo de relé e mantém seu estado."""
         pin = self.config.getint('RELAY', config_key)
-        if hasattr(self, f"relay_{device_enum.name.lower()}_device"):  # Prevents recreation
-            return getattr(self, f"relay_{device_enum.name.lower()}_device")
-
-        relay = LED(pin)
+        relay = LED(pin)  # ✅ Armazena a instância de LED para manter estado
         state = RelayStateEnum.ENABLED.name if relay.is_active else RelayStateEnum.DISABLED.name
-        return RelayDevice(device_enum.name, pin, state)
+        return RelayDevice(device_enum.name, pin, state, relay)
 
     def __change_relay_state(self, device, state):
-        """Changes the state of a relay using its stored LED instance."""
+        """Altera o estado do relé e mantém o estado ligado."""
         if RelayStateEnum[state] == RelayStateEnum.ENABLED:
             device.relay.on()
         else:
@@ -45,62 +44,49 @@ class Relay(object):
         device.state = RelayStateEnum[state].name
         return device
 
-    # ✅ Public Methods (Kept Unchanged)
+    # ✅ Métodos públicos mantidos
     def read_light_relay_state(self):
-        return self.relay_light_device.state
+        return self.relays[RelayDeviceEnum.LIGHT].state
 
     def read_exhaust_relay_state(self):
-        return self.relay_exhaust_device.state
+        return self.relays[RelayDeviceEnum.EXHAUST].state
 
     def read_humidifier_relay_state(self):
-        return self.relay_humidifier_device.state
+        return self.relays[RelayDeviceEnum.HUMIDIFIER].state
 
     def read_pump_relay_state(self):
-        return self.relay_pump_device.state
+        return self.relays[RelayDeviceEnum.PUMP].state
 
     def read_fan_relay_state(self):
-        return self.relay_fan_device.state
+        return self.relays[RelayDeviceEnum.FAN].state
 
     def read_inline_fan_relay_state(self):
-        return self.relay_inline_fan_device.state
+        return self.relays[RelayDeviceEnum.INLINE_FAN].state
 
     def read_valve_relay_state(self):
-        return self.relay_valve_device.state
+        return self.relays[RelayDeviceEnum.VALVE].state
 
     def change_light_relay_state(self, state):
-        return self.__change_relay_state(self.relay_light_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.LIGHT], state)
 
     def change_exhaust_relay_state(self, state):
-        return self.__change_relay_state(self.relay_exhaust_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.EXHAUST], state)
 
     def change_humidifier_relay_state(self, state):
-        return self.__change_relay_state(self.relay_humidifier_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.HUMIDIFIER], state)
 
     def change_pump_relay_state(self, state):
-        return self.__change_relay_state(self.relay_pump_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.PUMP], state)
 
     def change_fan_relay_state(self, state):
-        return self.__change_relay_state(self.relay_fan_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.FAN], state)
 
     def change_inline_fan_relay_state(self, state):
-        return self.__change_relay_state(self.relay_inline_fan_device, state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.INLINE_FAN], state)
 
     def change_valve_relay_state(self, state):
-        return self.__change_relay_state(self.relay_valve_device, state)
-
-    def toggle_relay_state(self, device):
-        """Toggles the relay between ENABLED and DISABLED states."""
-        new_state = RelayStateEnum.DISABLED.name if device.state == RelayStateEnum.ENABLED.name else RelayStateEnum.ENABLED.name
-        return self.__change_relay_state(device, new_state)
+        return self.__change_relay_state(self.relays[RelayDeviceEnum.VALVE], state)
 
     def get_device_list(self):
-        """Returns a list of all configured relays."""
-        return [
-            self.relay_light_device,
-            self.relay_exhaust_device,
-            self.relay_humidifier_device,
-            self.relay_pump_device,
-            self.relay_fan_device,
-            self.relay_inline_fan_device,
-            self.relay_valve_device
-        ]
+        """Retorna uma lista de todos os relés configurados."""
+        return list(self.relays.values())

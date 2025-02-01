@@ -1,9 +1,6 @@
 from IO.dht11 import Dht11
 from IO.relay import Relay
 from models.relay_device import RelayStateEnum
-from data import db_manager
-from data.db_tables import Measures
-from datetime import datetime
 
 if __name__ == "__main__":
     dht11 = Dht11()
@@ -32,11 +29,3 @@ if __name__ == "__main__":
             relay.change_exhaust_relay_state(RelayStateEnum.ENABLED.name)
             relay.change_inline_fan_relay_state(RelayStateEnum.ENABLED.name)
 
-    #DB
-    engine = db_manager.get_engine()
-    measure_object = Measures(
-        date = datetime.now(), 
-        temperature = temperature_humidity.temp, 
-        humidity = temperature_humidity.humidity
-    )
-    db_manager.persist_object(engine, measure_object)
