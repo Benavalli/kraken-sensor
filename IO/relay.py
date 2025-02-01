@@ -17,7 +17,7 @@ class Relay(object):
         return cls.instance
 
     def __loading_connected_relays(self):
-        """Carrega os relés conectados a partir do arquivo de configuração."""
+        """Loads all connected relays from the configuration file."""
         self.relay_light_device = self.__setup_device(RelayDeviceEnum.LIGHT, 'light.gpio.pin')
         self.relay_exhaust_device = self.__setup_device(RelayDeviceEnum.EXHAUST, 'exhaust.gpio.pin')
         self.relay_humidifier_device = self.__setup_device(RelayDeviceEnum.HUMIDIFIER, 'humidifier.gpio.pin')
@@ -27,12 +27,23 @@ class Relay(object):
         self.relay_valve_device = self.__setup_device(RelayDeviceEnum.VALVE, 'valve.gpio.pin')
 
     def __setup_device(self, device_enum, config_key):
-        """Configura um dispositivo de relé."""
+        """Configures a relay device and stores the LED instance."""
         pin = self.config.getint('RELAY', config_key)
-        relay = LED(pin)
+        relay = LED(pin)  # ✅ Store the LED instance in the device object
         state = RelayStateEnum.ENABLED.name if relay.is_active else RelayStateEnum.DISABLED.name
-        return RelayDevice(device_enum.name, pin, state)
+        return RelayDevice(device_enum.name, pin, state, relay)
 
+    def __change_relay_state(self, device, state):
+        """Changes the state of a relay using its stored LED instance."""
+        if RelayStateEnum[state] == RelayStateEnum.ENABLED:
+            device.relay.on()  # ✅ Uses the stored LED instance
+        else:
+            device.relay.off()
+
+        device.state = RelayStateEnum[state].name
+        return device
+
+    # ✅ Public Methods (Kept Unchanged)
     def read_light_relay_state(self):
         return self.relay_light_device.state
 
@@ -75,20 +86,8 @@ class Relay(object):
     def change_valve_relay_state(self, state):
         return self.__change_relay_state(self.relay_valve_device, state)
 
-    def __change_relay_state(self, device, state):
-        """Altera o estado de um relé."""
-        relay = LED(device.pin)
-
-        if RelayStateEnum[state] == RelayStateEnum.ENABLED:
-            relay.on()
-        else:
-            relay.off()
-
-        device.state = RelayStateEnum[state].name
-        return device
-
     def get_device_list(self):
-        """Retorna a lista de todos os relés configurados."""
+        """Returns a list of all configured relays."""
         return [
             self.relay_light_device,
             self.relay_exhaust_device,
