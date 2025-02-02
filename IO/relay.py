@@ -1,6 +1,7 @@
 import configparser
 import os
-from gpiozero import LED
+import gpiod
+
 from models.relay_device import RelayDeviceEnum, RelayDevice, RelayStateEnum
 
 
