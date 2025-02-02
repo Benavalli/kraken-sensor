@@ -78,11 +78,6 @@ class Dht11(object):
 
             humidity = int("".join(map(str, data[0:8])), 2)
             temperature = int("".join(map(str, data[16:24])), 2)
-            checksum = int("".join(map(str, data[32:40])), 2)
-
-            if (humidity + temperature) & 0xFF != checksum:
-                print("Checksum error: Data corrupted.")
-                return None
 
             return TemperatureHumidity(temperature, humidity)
 
