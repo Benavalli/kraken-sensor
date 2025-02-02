@@ -1,5 +1,5 @@
 from IO.dht11 import Dht11
-from IO.relay import Relay
+from IO.relay_controller import Relay
 from models.relay_device import RelayStateEnum
 
 if __name__ == "__main__":

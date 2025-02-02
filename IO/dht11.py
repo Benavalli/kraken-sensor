@@ -9,25 +9,25 @@ from models.temperature_humidity import TemperatureHumidity
 
 class Dht11(object):
 
-    instance = None
-    config = configparser.RawConfigParser()
-    lock = threading.Lock()
+    _instance = None
+    _config = configparser.RawConfigParser()
+    _lock = threading.Lock()
 
     def __new__(cls):
-        if cls.instance is None:
-            cls.instance = super(Dht11, cls).__new__(cls)
-            cls.config.read(os.path.join(os.path.dirname(__file__), '../config.properties'))
-            cls.__load_dht11_sensor(cls.instance)
-        return cls.instance
+        if cls._instance is None:
+            cls._instance = super(Dht11, cls).__new__(cls)
+            cls._config.read(os.path.join(os.path.dirname(__file__), '../config.properties'))
+            cls.__load_dht11_sensor(cls._instance)
+        return cls._instance
 
     def __load_dht11_sensor(self):
-        self.dht_sensor_pin = self.config.getint('DHT11', 'dht11.gpio.pin')
-        self.retries = self.config.getint('DHT11', 'dht11.retries')
-        self.sleepTime = self.config.getfloat('DHT11', 'dht11.sleep.time')
-        self.chip = gpiod.Chip(self.config.get('PI', 'chip'))
+        self.dht_sensor_pin = self._config.getint('DHT11', 'dht11.gpio.pin')
+        self.retries = self._config.getint('DHT11', 'dht11.retries')
+        self.sleepTime = self._config.getfloat('DHT11', 'dht11.sleep.time')
+        self.chip = gpiod.Chip(self._config.get('PI', 'chip'))
 
     def get_temperature_humidity(self):
-        with self.lock:
+        with self._lock:
             temperature_humidity_list = []
             for x in range(self.retries):
                 temperature_humidity = self._read_dht11_sensor()

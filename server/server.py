@@ -2,7 +2,7 @@ import json
 
 from flask import Flask, request, jsonify
 from IO.dht11 import Dht11
-from IO.relay import Relay
+from IO.relay_controller import Relay
 
 app = Flask(__name__)
 

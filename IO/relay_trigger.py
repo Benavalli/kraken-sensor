@@ -2,7 +2,7 @@ import gpiod
 import time
 
 CHIP = "/dev/gpiochip0"  # Para Raspberry Pi OS Bookworm
-GPIO_PIN = 18  # Pino que controla o relé (e será lido)
+GPIO_PIN = 26  # Pino que controla o relé (e será lido)
 
 # Inicializa o chip
 chip = gpiod.Chip(CHIP)

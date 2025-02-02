@@ -2,14 +2,15 @@ import enum
 
 
 class RelayDeviceEnum(enum.Enum):
-    LIGHT = 1
-    EXHAUST = 2
-    HUMIDIFIER = 3
-    PUMP = 4
-    FAN = 5
-    INLINE_FAN = 6
-    VALVE = 7
-    AIR_PUMP = 8
+    LIGHT = "light.gpio.pin"
+    LIGHT_TWO = "light.two.gpio.pin"
+    EXHAUST = "exhaust.gpio.pin"
+    HUMIDIFIER = "humidifier.gpio.pin"
+    PUMP = "pump.gpio.pin"
+    FAN = "fan.gpio.pin"
+    INLINE_FAN = "inline.fan.gpio.pin"
+    VALVE = "valve.gpio.pin"
+    AIR_PUMP = "valve.gpio.pin"
 
 
 class RelayStateEnum(enum.Enum):
@@ -19,7 +20,6 @@ class RelayStateEnum(enum.Enum):
 
 class RelayDevice:
 
-    def __init__(self, device, pin, state):
-        self.device = device
+    def __init__(self, name, pin):
+        self.name = name
         self.pin = pin
-        self.state = state

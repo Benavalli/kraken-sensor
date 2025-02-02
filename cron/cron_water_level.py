@@ -1,4 +1,4 @@
-from IO.relay import Relay
+from IO.relay_controller import Relay
 from IO.water_level_sensors import WaterLevelSensors
 import time
 

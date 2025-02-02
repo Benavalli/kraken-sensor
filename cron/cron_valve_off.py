@@ -1,7 +1,6 @@
-from IO.relay import Relay
+from IO.relay_controller import RelayController
 from models.relay_device import RelayStateEnum
 
 if __name__ == "__main__":
-    relay = Relay()
-    if relay.read_valve_relay_state() == RelayStateEnum.ENABLED.value:
-        relay.change_valve_relay_state(RelayStateEnum.DISABLED.name)
+    relay = RelayController()
+    relay.change_valve_relay_state(RelayStateEnum.DISABLED)
