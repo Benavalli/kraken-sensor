@@ -24,7 +24,7 @@ class Dht11(object):
         self.dht_sensor_pin = self.config.getint('DHT11', 'dht11.gpio.pin')
         self.retries = self.config.getint('DHT11', 'dht11.retries')
         self.sleepTime = self.config.getfloat('DHT11', 'dht11.sleep.time')
-        self.chip = gpiod.Chip( self.config.getfloat('PI', 'chip'))
+        self.chip = gpiod.Chip(self.config.get('PI', 'chip'))
 
     def get_temperature_humidity(self):
         with self.lock:
