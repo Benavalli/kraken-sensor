@@ -22,6 +22,7 @@ show_python_version() {
 install_db_tools() {
 	sudo apt update
 	sudo apt-get install sqlite3 sqlitebrowser -y
+	sudo apt install python3-gpiozero -y
 }
 
 #! Installing required dependencies
@@ -38,4 +39,4 @@ install_db_tools
 show_python_version
 install_requirements
 export 	PYTHONPATH=$(pwd)
-python $(pwd)/data/db_manager.py
+#python $(pwd)/data/db_manager.py
