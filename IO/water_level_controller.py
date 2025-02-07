@@ -47,6 +47,7 @@ class WaterLevelController(object):
 
     def _get_sensor_level(self, pin, measurement_type):
         try:
+            print(measurement_type)
             line = self.chip.get_line(pin)
             line.request(consumer=measurement_type.name, type=gpiod.LINE_REQ_DIR_IN)
             value = line.get_value()
