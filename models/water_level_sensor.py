@@ -13,3 +13,8 @@ class WaterLevelSensor:
     def __init__(self, measurement_type, pin):
         self.measurement_type = measurement_type
         self.pin = pin
+
+class WaterLevelMeasurementResult:
+    def __init__(self, max_sensor_state, min_sensor_state):
+        self.max_sensor_state = max_sensor_state
+        self.min_sensor_state = min_sensor_state

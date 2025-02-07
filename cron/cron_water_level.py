@@ -1,12 +1,12 @@
 from IO.relay_controller import Relay
-from IO.water_level_sensors import WaterLevelSensors
+from IO.water_level_controller import WaterLevelController
 import time
 
 from models.relay_device import RelayStateEnum
 from models.water_level_sensor import WaterLevelStateEnum
 
 if __name__ == "__main__":
-    water_level_sensors = WaterLevelSensors()
+    water_level_sensors = WaterLevelController()
     relay = Relay()
 
     if water_level_sensors.get_water_min_level_sensor_state() == WaterLevelStateEnum.LOW.value:
