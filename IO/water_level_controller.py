@@ -47,15 +47,14 @@ class WaterLevelController(object):
 
     def _get_sensor_level(self, pin, measurement_type):
         try:
-            print(measurement_type)
             line = self.chip.get_line(pin)
-            line.request(consumer=measurement_type.name, type=gpiod.LINE_REQ_DIR_IN)
+            line.request(consumer=measurement_type, type=gpiod.LINE_REQ_DIR_IN)
             value = line.get_value()
             line.release()
             return WaterLevelStateEnum(value)
         except OSError as e:
-            print(f"GPIO error: {e} for {measurement_type.name}")
+            print(f"GPIO error: {e} for {measurement_type}")
             return None
         except Exception as e:
-            print(f"Unexpected error: {e} when fetching {measurement_type.name} data")
+            print(f"Unexpected error: {e} when fetching {measurement_type} data")
             return None
