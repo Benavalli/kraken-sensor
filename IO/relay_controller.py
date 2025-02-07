@@ -63,6 +63,9 @@ class RelayController:
     def change_light_relay_state(self, state):
         return self._change_relay_state(self._relays[RelayDeviceEnum.LIGHT], state)
 
+    def change_light_two_relay_state(self, state):
+        return self._change_relay_state(self._relays[RelayDeviceEnum.LIGHT_TWO], state)
+
     def change_exhaust_relay_state(self, state):
         return self._change_relay_state(self._relays[RelayDeviceEnum.EXHAUST], state)
 
