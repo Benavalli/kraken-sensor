@@ -2,8 +2,8 @@ from time import sleep
 from datetime import datetime
 from data import db_manager
 from data.db_tables import Pictures
+from picamera2 import Picamera2
 
-import picamera
 import os
     
 def __persist_picture_object(blob_picture):
@@ -25,9 +25,6 @@ def __delete_picture_file(file_name):
         
 def take_picture():
     print('Preparing Camera...')
-    sleep(5)
-    print('Taking Picture...')
-
     pictures_dir = os.path.join(os.path.dirname(__file__), 'taken-pictures')
     os.makedirs(pictures_dir, exist_ok=True)
 
@@ -36,10 +33,15 @@ def take_picture():
         f"{datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.jpg"
     )
 
-    with picamera.PiCamera() as camera:
-        camera.capture(file_name)
-        return file_name
-    
+    picam2 = Picamera2()
+    picam2.start()
+    sleep(1)
+    print('Taking Picture...')
+    picam2.capture_file(file_name)
+    picam2.stop()
+
+    return file_name
+
 def save_picture(file_name):
     try:
         with open(file_name, 'rb') as file:

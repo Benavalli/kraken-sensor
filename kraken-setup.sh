@@ -23,7 +23,7 @@ install_db_tools() {
 	sudo apt update
 	sudo apt install sqlite3 sqlitebrowser python3-sqlalchemy -y
 	sudo apt install python3-gpiozero -y
-	sudo apt install python3-picamera -y
+	sudo apt install python3-picamera2 -y
 }
 
 sudo apt update
