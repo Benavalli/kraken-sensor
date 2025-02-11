@@ -7,14 +7,14 @@ if __name__ == "__main__":
     relayController = RelayController()
     temperature_humidity = dht11.get_temperature_humidity()
 
-    if temperature_humidity.humidity < 48:
+    if temperature_humidity.humidity < 84:
         relayController.change_humidifier_relay_state(RelayStateEnum.ENABLED)
-        #relayController.change_fan_relay_state(RelayStateEnum.ENABLED)
 
-    if temperature_humidity.humidity > 60 :
+    if temperature_humidity.humidity > 90:
         relayController.change_humidifier_relay_state(RelayStateEnum.DISABLED)
-        #relayController.change_fan_relay_state(RelayStateEnum.DISABLED)
 
-    if temperature_humidity.temp > 27 :
-        relayController.change_exhaust_relay_state(RelayStateEnum.ENABLED)
-        relayController.change_inline_fan_relay_state(RelayStateEnum.ENABLED)
+    if temperature_humidity.temp < 20:
+        relayController.change_fan_relay_state(RelayStateEnum.ENABLED)
+
+    if temperature_humidity.temp > 24:
+        relayController.change_fan_relay_state(RelayStateEnum.DISABLED)

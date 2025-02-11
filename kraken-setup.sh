@@ -21,9 +21,14 @@ show_python_version() {
 #! Installing SQLite
 install_db_tools() {
 	sudo apt update
-	sudo apt-get install sqlite3 sqlitebrowser -y
+	sudo apt install sqlite3 sqlitebrowser python3-sqlalchemy -y
 	sudo apt install python3-gpiozero -y
+	sudo apt install python3-picamera -y
 }
+
+sudo apt update
+sudo apt install python3 python3-pip python3-sqlalchemy sqlite3
+
 
 #! Installing required dependencies
 install_requirements() {
@@ -37,6 +42,6 @@ install_requirements() {
 
 install_db_tools
 show_python_version
-install_requirements
-export 	PYTHONPATH=$(pwd)
+#install_requirements
+#export 	PYTHONPATH=$(pwd)
 #python $(pwd)/data/db_manager.py
