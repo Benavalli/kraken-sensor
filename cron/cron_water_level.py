@@ -1,4 +1,4 @@
-from IO.relay_controller import Relay
+from IO.relay_controller import RelayController
 from IO.water_level_controller import WaterLevelController
 import time
 
@@ -6,19 +6,22 @@ from models.relay_device import RelayStateEnum
 from models.water_level_sensor import WaterLevelStateEnum
 
 if __name__ == "__main__":
-    water_level_sensors = WaterLevelController()
-    relay = Relay()
+    levelController = WaterLevelController()
+    relayController = RelayController()
 
-    if water_level_sensors.get_water_min_level_sensor_state() == WaterLevelStateEnum.LOW.value:
-         if relay.read_valve_relay_state() == RelayStateEnum.DISABLED.value:
-                    relay.change_valve_relay_state(RelayStateEnum.ENABLED.name)
-                    
-         while True:
+    if levelController.get_water_level_measures().min_sensor_state == WaterLevelStateEnum.LOW:
+        print(f"⚠️ Min level low, turning valve on.")
+        relayController.change_valve_relay_state(RelayStateEnum.ENABLED)
+        time.sleep(1)
+
+        while True:
             try:
-                if water_level_sensors.get_water_max_level_sensor_state == WaterLevelStateEnum.LOW.value:
-                    time.sleep(0.3)
-                else:
-                    relay.change_valve_relay_state(RelayStateEnum.DISABLED.name)
+                if levelController.get_water_level_measures().max_sensor_state == WaterLevelStateEnum.HIGH:
+                    relayController.change_valve_relay_state(RelayStateEnum.DISABLED)
+                    print(f"⚠️ Max level HIGH, turning valve off.")
                     break
-            except:
+                else:
+                    time.sleep(0.5)
+            except Exception as e:
+                print(f"Error: {e}.")
                 break
