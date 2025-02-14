@@ -10,7 +10,7 @@ class RelayDeviceEnum(enum.Enum):
     FAN = "fan.gpio.pin"
     INLINE_FAN = "inline.fan.gpio.pin"
     VALVE = "valve.gpio.pin"
-    AIR_PUMP = "valve.gpio.pin"
+    AIR_PUMP = "air.pump.gpio.pin"
 
 
 class RelayStateEnum(enum.Enum):

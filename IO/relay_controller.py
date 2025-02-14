@@ -75,6 +75,9 @@ class RelayController:
     def change_pump_relay_state(self, state):
         return self._change_relay_state(self._relays[RelayDeviceEnum.PUMP], state)
 
+    def change_air_pump_relay_state(self, state):
+        return self._change_relay_state(self._relays[RelayDeviceEnum.AIR_PUMP], state)
+
     def change_fan_relay_state(self, state):
         return self._change_relay_state(self._relays[RelayDeviceEnum.FAN], state)
 
